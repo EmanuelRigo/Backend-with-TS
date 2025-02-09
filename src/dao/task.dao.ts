@@ -1,4 +1,4 @@
-import { idText } from "typescript"
+
 import { taskModel } from "../models/task.model"
 
 const getAll = async ()=> {
@@ -16,3 +16,5 @@ return await taskModel.findByIdAndUpdate(id, data)
 const remove = async (id: any)=> {
 return await taskModel.findByIdAndDelete(id)
 }
+
+export default {getAll, getOne, create, update, remove}
