@@ -1,19 +1,21 @@
 
+import { Task } from "../interfaces/task"
+import { UpdateTask } from "../interfaces/updateTask"
 import { taskModel } from "../models/task.model"
 
 const getAll = async ()=> {
  return await taskModel.find()
 }
-const getOne = async (query: any)=> {
+const getOne = async (query: UpdateTask)=> {
 return await taskModel.findOne(query)
 }
-const create = async (data: any)=> {
+const create = async (data: Task)=> {
 return await taskModel.create(data)
 }
-const update = async (id: any, data: any)=> {
-return await taskModel.findByIdAndUpdate(id, data)
+const update = async (id: string, data: UpdateTask)=> {
+return await taskModel.findByIdAndUpdate(id, data, {new: true})
 }
-const remove = async (id: any)=> {
+const remove = async (id: string)=> {
 return await taskModel.findByIdAndDelete(id)
 }
 

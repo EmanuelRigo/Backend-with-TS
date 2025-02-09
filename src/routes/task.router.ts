@@ -1,5 +1,6 @@
 import { Router } from "express";
 import taskDao from "../dao/task.dao";
+import { Task } from "../interfaces/task";
 
 const router = Router()
 
@@ -25,9 +26,22 @@ router.get("/:id", async(req, res)=> {
     }
 })
 
-router.get("/", async(req, res)=> {
+
+router.post("/", async(req, res)=> {
     try {
-        const tasks = await taskDao.getAll()
+        const { task } = req.body as Task;
+        const newTask = await taskDao.create({task, done: false})
+        res.status(200).json({status: "ok", payload: newTask})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Internal Server Error"})
+    }
+})
+
+router.put("/:id", async(req, res)=> {
+    try {
+        const {id} = req.params
+        const tasks = await taskDao.update(id, {done: true})
         res.status(200).json({status: "ok", payload: tasks})
     } catch (error) {
         console.log(error)
@@ -35,19 +49,10 @@ router.get("/", async(req, res)=> {
     }
 })
 
-router.get("/", async(req, res)=> {
+router.delete("/:id", async(req, res)=> {
     try {
-        const tasks = await taskDao.getAll()
-        res.status(200).json({status: "ok", payload: tasks})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({error: "Internal Server Error"})
-    }
-})
-
-router.get("/", async(req, res)=> {
-    try {
-        const tasks = await taskDao.getAll()
+        const {id} = req.params
+        const tasks = await taskDao.remove(id)
         res.status(200).json({status: "ok", payload: tasks})
     } catch (error) {
         console.log(error)
